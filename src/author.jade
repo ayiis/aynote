@@ -1,0 +1,45 @@
+jade:include templete/head.jade
+
+#ay.container
+
+    #head
+        .h2
+            a#site_title.a-site-link(href="<%site%>") <%site_title%>
+        #site_sub_title.text-muted <%site_sub_title%>
+
+    .row
+        .col-2
+            hr
+        .col-10
+    br
+    br
+
+    #main.row
+
+        .col-1
+        .col-10.a-pd-lr30
+            div
+                a#title.a-site-link(href="") <=%author.username%>
+                span.a-tag <=%author.role_name%>
+            #info.text-muted
+                span Thank you for delivering informations, since <=%author.reg_date%>
+            hr
+            br
+            .row
+                .col-4
+                .col-4.text-muted
+                    .form-group
+                        label Username
+                        input#username.form-control(type="text", placeholder="字母或数字")
+                    .form-group
+                        label Password
+                        input#password.form-control(type="password", placeholder="16位以上")
+                    .form-group
+                        button#btn_signin.btn.btn-primary Sign in
+        .col-1
+
+    #foot.row.text-center.bg-light
+        .col.text-muted Thanks again © <=%author.username%>
+
+script.
+    common.scroll_to_ele($("#main"));

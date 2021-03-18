@@ -1,0 +1,69 @@
+jade:include templete/head.jade
+
+#ay.container
+
+    #head
+        .h2
+            a#site_title.a-site-link(href="<%site%>") <%site_title%>
+        #site_sub_title.text-muted <%site_sub_title%>
+
+    .row
+        .col-2
+            hr
+        .col-10
+    br
+    br
+
+    #main.row
+
+        .col-1
+        .col-10.a-pd-lr30
+            div
+                a#title.a-site-link(href="") SIGN IN
+            #info.text-muted
+                span Welcome back
+            hr
+            br
+            .row
+                .col-4
+                .col-4.text-muted
+                    .form-group
+                        label Username
+                        input#username.form-control(type="text", placeholder="字母或数字")
+                    .form-group
+                        label Password
+                        input#password.form-control(type="password", placeholder="16位以上")
+                    .form-group
+                        button#btn_signin.btn.btn-primary Sign in
+        .col-1
+
+    #foot.row.text-center.bg-light
+        .col.text-muted Copyright © <%copyright%>
+
+script.
+
+    $(()=> {
+        common.scroll_to_ele($("#main"));
+        $("#btn_signin").on("click", function() {
+            let req_data = {
+                "username": $("#username").val(),
+                "password": $("#password").val(),
+            };
+            common.api_post({
+                url: "/login",
+                //- url: "/api/user/register",
+                data: req_data,
+                success: (res)=> {
+                    console.log(res);
+                    if(res.code == 0) {
+                        $.notify("登陆成功，正在跳转..", "success");
+                        setTimeout(function() {
+                            window.location = "/";
+                        }, 1000);
+                    } else {
+                        $.notify(res.desc, "error");
+                    }
+                },
+            });
+        });
+    });

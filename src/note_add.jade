@@ -1,0 +1,110 @@
+jade:include templete/head.jade
+
+#ay.container
+
+    #head
+        .h2
+            a#site_title.a-site-link(href="<%site%>") <%site_title%>
+        #site_sub_title.text-muted <%site_sub_title%>
+
+    hr
+    br
+
+    #main.row
+        .col-3
+            .form-group
+                label.text-muted 作者
+                input#author.form-control(placeholder="<%author%>")
+            .form-group
+                label.text-muted 日期:
+                input#datetime.form-control(placeholder="自动获取")
+            .form-group
+                label.text-muted 标签
+                input#tags.form-control(placeholder="多个标签用逗号隔开")
+            .form-group
+                .form-check.form-check-inline
+                    input#status.form-check-input(type="radio", name="radio_status", checked)
+                    label.form-check-label(for="status") 公开
+                .form-check.form-check-inline
+                    input#status2.form-check-input(type="radio", name="radio_status")
+                    label.form-check-label(for="status2") 私密
+            .form-group
+                button#btn_submit.btn.btn-success 发布
+
+        .col-9
+            .form-row
+                .form-group.col-12
+                    input#title.form-control(placeholder="标题（生成链接地址）")
+            .form-row
+                .form-group.col-3
+                    .form-check.form-check-inline
+                        input#update_link.form-check-input(type="checkbox")
+                        label.form-check-label(for="update_link") 自定义链接地址
+                .form-group.col-9
+                    input#link.form-control(placeholder="链接地址", disabled)
+            .form-row
+                .form-group.col-12
+                    textarea#content.form-control(rows="30", placeholder="内容（使用 Markdown 格式）")
+
+
+    #foot.row.text-center.bg-light
+        .col.text-muted Copyright © <%copyright%>
+
+script.
+    $(()=> {
+
+        common.scroll_to_ele($("#main"));
+
+        let GW = {
+            "update_link": true,
+        };
+
+        $("#update_link").on("change", function() {
+            let checked = $(this).is(":checked");
+            if(checked) {
+                $("#link").attr("disabled", null);
+                GW.update_link = false;
+            } else {
+                $("#link").attr("disabled", "");
+                GW.update_link = true;
+            }
+        });
+
+        $("#title").on("input", function() {
+            let title = $("#title").val();
+            if(GW.update_link) {
+                let link = title.replace(/[^0-9a-z]+/gi, "-");
+                link = link.replace(/^\-+|\-+$/g, "");
+                $("#link").val(link);
+            }
+        });
+
+        $("#btn_submit").on("click", function() {
+            let req_data = {
+                "title": $("#title").val() || "",
+                "link": $("#link").val() || "",
+                "datetime": $("#datetime").val() || "",
+                "author": $("#author").val() || "",
+                "tags": $("#tags").val() || "",
+                "content": $("#content").val() || "",
+                "status": $("#status").is(":checked") ? 1 : 0,
+            };
+            common.api_post({
+                url: "/api/note/add",
+                data: req_data,
+                success: (res)=> {
+                    console.log(res);
+                    if(res.code == 0) {
+                        $.notify(res.desc, "success");
+                        setTimeout(()=> {
+                            window.location.href = "/note/" + res.data + "/" + req_data["link"];
+                        }, 1000);
+                    } else {
+                        $.notify(res.desc, "error");
+                    }
+                },
+            });
+            return false;
+        });
+
+    });

@@ -1,0 +1,105 @@
+jade:include templete/head.jade
+
+#ay.container
+
+    #head
+        .h2
+            a#site_title.a-site-link(href="<%site%>") <%site_title%>
+        #site_sub_title.text-muted <%site_sub_title%>
+
+    hr
+    br
+
+    #main.row
+
+        .col-3
+            .font-weight-bold Announcement
+            .text-muted
+                small Thanks for:&nbsp;
+                small
+                    a(href="https://ayiis.me/") ayiis.me
+            .text-muted
+                small Author:&nbsp;
+                small
+                    a(href="/author/<%author%>") <%author%>
+            br
+            br
+            .font-weight-bold Reading ranking
+            #note_read_rank
+                a(href="", val="link")
+                    small(val="title")
+
+        .col-9.a-pd-lr30
+            #note_list
+                .col-12.a-pd-t10
+                    .h4
+                        a(val="link", href="")
+                            span(val="title")
+                    .text-right.text-muted
+                        small
+                            a(val="author", href="")
+                            span &nbsp;@&nbsp;
+                            span(val="datetime")
+
+            br
+            #pager.row
+
+
+    #foot.row.text-center.bg-light
+        .col.text-muted Copyright © <%copyright%>
+
+script(src="/static/js/pager.js")
+script.
+
+    $(()=> {
+
+        var list_pager = pager.init_pagination({
+            "ele": $("#pager"),
+            "callback": next_page,
+        });
+
+        let $note_read_rank = $($("#note_read_rank").html());
+        common.api_post({
+            url: "/api/note/read_rank",
+            success: (res)=> {
+                if(res.code == 0) {
+                    $("#note_read_rank").empty();
+                    for(let i = 0 ; i < res.data.length ; i++ ) {
+                        let alink = $note_read_rank.clone();
+                        alink.attr("href", res.data[i]["link"]);
+                        alink.find("[val=title]").text(res.data[i]["title"]);
+                        $("#note_read_rank").append(alink);
+                    }
+                } else {
+                    $.notify(res.desc, "error");
+                }
+            },
+        });
+        let $note_list = $($("#note_list").html());
+        function next_page(page_index) {
+            page_index = page_index || 1;
+            common.api_post({
+                url: "/api/note/note_list",
+                data: {"page_index": page_index},
+                success: (res)=> {
+                    //- console.log(res);
+                    if(res.code == 0) {
+                        $("#note_list").empty();
+                        for(let i = 0 ; i < res.data.length ; i++ ) {
+                            let alink = $note_list.clone();
+                            alink.find("[val=link]").attr("href", res.data[i]["link"]);
+                            alink.find("[val=title]").text(res.data[i]["title"]);
+                            alink.find("[val=author]").text(res.data[i]["author"]);
+                            alink.find("[val=author]").attr("href", encodeURI("/author/" + res.data[i]["author"]));
+                            alink.find("[val=datetime]").text(res.data[i]["datetime"].split(" ")[0]);
+                            $("#note_list").append(alink);
+                        }
+                        list_pager.touch_pagination(res.rows, page_index);
+                    } else {
+                        $.notify(res.desc, "error");
+                    }
+                },
+            });
+        }
+        next_page(1);
+    });
