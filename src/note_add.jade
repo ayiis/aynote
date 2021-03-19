@@ -1,32 +1,28 @@
 jade:include templete/head.jade
 
 #ay.container
-
-    #head
-        .h2
-            a#site_title.a-site-link(href="<%site%>") <%site_title%>
-        #site_sub_title.text-muted <%site_sub_title%>
-
-    hr
-    br
+    .p-3
 
     #main.row
         .col-3
-            .form-group
-                label.text-muted 作者
-                input#author.form-control(placeholder="<%author%>")
-            .form-group
-                label.text-muted 日期:
-                input#datetime.form-control(placeholder="自动获取")
-            .form-group
-                label.text-muted 标签
-                input#tags.form-control(placeholder="多个标签用逗号隔开")
+            .input-group.mb-3
+                .input-group-prepend
+                    span.input-group-text.text-muted 作者
+                input.form-control(placeholder="<%author%>", val="author")
+            .input-group.mb-3
+                .input-group-prepend
+                    span.input-group-text.text-muted 日期
+                input.form-control(placeholder="自动获取", val="datetime")
+            .input-group.mb-3
+                .input-group-prepend
+                    span.input-group-text.text-muted 标签
+                input.form-control(placeholder="多个标签用逗号隔开", val="tags")
             .form-group
                 .form-check.form-check-inline
-                    input#status.form-check-input(type="radio", name="radio_status", checked)
+                    input.form-check-input(type="radio", name="radio_status", checked, val="status")
                     label.form-check-label(for="status") 公开
                 .form-check.form-check-inline
-                    input#status2.form-check-input(type="radio", name="radio_status")
+                    input.form-check-input(type="radio", name="radio_status", val="status2")
                     label.form-check-label(for="status2") 私密
             .form-group
                 button#btn_submit.btn.btn-success 发布
@@ -34,60 +30,61 @@ jade:include templete/head.jade
         .col-9
             .form-row
                 .form-group.col-12
-                    input#title.form-control(placeholder="标题（生成链接地址）")
+                    label.form-check-label(for="update_link") 自定义链接地址
+                    input.form-control(placeholder="标题（生成链接地址）", val="title")
             .form-row
                 .form-group.col-3
                     .form-check.form-check-inline
-                        input#update_link.form-check-input(type="checkbox")
+                        input.form-check-input(type="checkbox", val="update_link")
                         label.form-check-label(for="update_link") 自定义链接地址
                 .form-group.col-9
-                    input#link.form-control(placeholder="链接地址", disabled)
+                    input.form-control(placeholder="链接地址", disabled, val="link")
             .form-row
                 .form-group.col-12
-                    textarea#content.form-control(rows="30", placeholder="内容（使用 Markdown 格式）")
+                    textarea.form-control(rows="30", placeholder="内容（使用 Markdown 格式）", val="content")
 
 
-    #foot.row.text-center.bg-light
-        .col.text-muted Copyright © <%copyright%>
+    jade:include templete/site_foot.jade
 
 script.
     $(()=> {
 
-        common.scroll_to_ele($("#main"));
+        $("[val=datetime]").val(common.get_datetime_string());
+        common.scroll_to_ele($("#ay"));
 
         let GW = {
             "update_link": true,
         };
 
-        $("#update_link").on("change", function() {
+        $("[val=update_link]").on("change", function() {
             let checked = $(this).is(":checked");
             if(checked) {
-                $("#link").attr("disabled", null);
+                $("[val=link]").attr("disabled", null);
                 GW.update_link = false;
             } else {
-                $("#link").attr("disabled", "");
+                $("[val=link]").attr("disabled", "");
                 GW.update_link = true;
             }
         });
 
-        $("#title").on("input", function() {
-            let title = $("#title").val();
+        $("[val=title]").on("input", function() {
+            let title = $("[val=title]").val();
             if(GW.update_link) {
                 let link = title.replace(/[^0-9a-z]+/gi, "-");
                 link = link.replace(/^\-+|\-+$/g, "");
-                $("#link").val(link);
+                $("[val=link]").val(link);
             }
         });
 
         $("#btn_submit").on("click", function() {
             let req_data = {
-                "title": $("#title").val() || "",
-                "link": $("#link").val() || "",
-                "datetime": $("#datetime").val() || "",
-                "author": $("#author").val() || "",
-                "tags": $("#tags").val() || "",
-                "content": $("#content").val() || "",
-                "status": $("#status").is(":checked") ? 1 : 0,
+                "title": $("[val=title]").val() || "",
+                "link": $("[val=link]").val() || "",
+                "datetime": $("[val=datetime]").val() || "",
+                "author": $("[val=author]").val() || "",
+                "tags": $("[val=tags]").val() || "",
+                "content": $("[val=content]").val() || "",
+                "status": $("[val=status]").is(":checked") ? 1 : 0,
             };
             common.api_post({
                 url: "/api/note/add",

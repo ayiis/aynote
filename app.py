@@ -35,7 +35,7 @@ async def main():
         "/api/note/note_list": note.note_list,
 
         "/api/user/register": user.register,
-        # "/api/user/query": user.query,
+        "/api/user/query": user.query,
     })
     Authorize.init(config.security_settings, [
         r"/api/note/add",
@@ -43,31 +43,10 @@ async def main():
         r"/api/user/register",    # 不开放注册
 
         r"/note_edit",
-        r"/note_add",
+        # r"/note_add",
     ])
 
     app.router.add_static("/static/", path="./static/", name="static")  # 静态资源 js css img (下载形式)
-
-    # html 内容页面
-    app.router.add_route(
-        "GET", "/note/{match:.*}",
-        ContentHandler.wrap("src", templete, "note", user.content_author, {
-            "head_title": "read note",
-        })
-    )
-    app.router.add_route(
-        "GET", "/note_edit/{match:.*}",
-        ContentHandler.wrap("src", templete, "note_edit", user.content_author, {
-            "head_title": "edit note",
-        })
-    )
-    app.router.add_route(
-        "GET", "/author/{match:.*}",
-        ContentHandler.wrap("src", templete, "author", user.content_author, {
-            "head_title": "view author info",
-        })
-    )
-
     app.router.add_route("POST", "/login", user.LoginHandler.do)      # LoginHandler 接口
     app.router.add_route("POST", "/api/{match:.*}", ApiHandler.do)      # API 接口
     app.router.add_route("GET", "/{match:.*}", TemplateHandler.wrap("src", templete, index="index"))    # html 静态页面

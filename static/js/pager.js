@@ -75,13 +75,13 @@ window.pager = {
             if (pagination_setting[i] == "") {
                 li_string = '<li class="page-item"><p class="page-link" style="background-color:#eee;height:2.4rem;">&nbsp;</p></li>';
             } else if (i == 0) {
-                li_string = '<li class="page-item"><a class="page-link" href="#" val="' + val + '"> ' + val + ' « </a></li>';
+                li_string = '<li class="page-item"><a class="page-link" href val="' + val + '"> ' + val + ' « </a></li>';
             } else if (i == pagination_setting.length - 1) {
-                li_string = '<li class="page-item"><a class="page-link" href="#" val="' + val + '"> » ' + val + ' </a></li>';
+                li_string = '<li class="page-item"><a class="page-link" href val="' + val + '"> » ' + val + ' </a></li>';
             } else if (pagination_setting[i] == self.page_index) {
-                li_string = '<li class="page-item active"><a class="page-link" href="#" val="' + val + '"> ' + val + ' </a></li>';
+                li_string = '<li class="page-item active"><a class="page-link" href val="' + val + '"> ' + val + ' </a></li>';
             } else {
-                li_string = '<li class="page-item"><a class="page-link" href="#" val="' + val + '"> ' + val + ' </a></li>';
+                li_string = '<li class="page-item"><a class="page-link" href val="' + val + '"> ' + val + ' </a></li>';
             }
             html_list.push(li_string);
         }

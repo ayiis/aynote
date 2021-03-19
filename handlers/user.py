@@ -36,6 +36,7 @@ async def query(req_data):
 
     db_query = {"username": req_data["username"]}
     res = await collection.find_one(db_query, {"_id": 0, "signature": 0})
+    assert res, "user %s does not exists." % req_data["username"]
 
     return res, 1
 

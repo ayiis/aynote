@@ -30,6 +30,17 @@
             }
             return arr;
         },
+        get_datetime_string: ()=> {
+            let now = new Date();
+            let mm = now.getMonth() + 1;
+            let dd = now.getDate();
+
+            return [
+                now.getFullYear(),
+                (mm > 9 ? '' : '0') + mm,
+                (dd > 9 ? '' : '0') + dd,
+            ].join("-") + " " + now.toLocaleTimeString().substr(0, 8);
+        },
         scroll_to_ele: (ele)=> {
             let scroll_top = ele.offset() ? ele.offset().top : 0;
             $([document.documentElement, document.body]).scrollTop(scroll_top);

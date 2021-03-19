@@ -1,45 +1,49 @@
 jade:include templete/head.jade
 
 #ay.container
-
-    #head
-        .h2
-            a#site_title.a-site-link(href="<%site%>") <%site_title%>
-        #site_sub_title.text-muted <%site_sub_title%>
-
-    .row
-        .col-2
-            hr
-        .col-10
-    br
-    br
+    .p-3
 
     #main.row
 
         .col-1
         .col-10.a-pd-lr30
             div
-                a#title.a-site-link(href="") <=%author.username%>
-                span.a-tag <=%author.role_name%>
+                a#title.a-site-link(href="", val="username") <%author%>
+                span.a-tag(val="role_name") 建立者
             #info.text-muted
-                span Thank you for delivering informations, since <=%author.reg_date%>
+                span Thank you for delivering informations since&nbsp;
+                span(val="reg_date") 1999-01-01
             hr
-            br
+            .p-3
             .row
-                .col-4
-                .col-4.text-muted
-                    .form-group
-                        label Username
-                        input#username.form-control(type="text", placeholder="字母或数字")
-                    .form-group
-                        label Password
-                        input#password.form-control(type="password", placeholder="16位以上")
-                    .form-group
-                        button#btn_signin.btn.btn-primary Sign in
+                #content.col.text-muted
+                    | One's page is coming..
+
         .col-1
 
     #foot.row.text-center.bg-light
-        .col.text-muted Thanks again © <=%author.username%>
+        .col.text-muted
+            span Thanks again ©&nbsp;
+            span(val="username")
 
 script.
-    common.scroll_to_ele($("#main"));
+
+    $(()=> {
+        let paras = window.location.pathname.split("/");
+        const username = paras[2];
+        common.api_post({
+            url: "/api/user/query",
+            data: {"username": username},
+            success: (res)=> {
+                if(res.code == 0) {
+                    $("[val=username]").text(res.data["username"]);
+                    $("[val=reg_date]").text(res.data["reg_date"]);
+                    $("[val=role_name]").text(res.data["role_name"]);
+                    common.scroll_to_ele($("#ay"));
+                } else {
+                    $.notify(res.desc, "error");
+                }
+            },
+        });
+    });
+

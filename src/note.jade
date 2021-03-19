@@ -1,18 +1,7 @@
 jade:include templete/head.jade
 
 #ay.container
-
-    #head
-        .h2
-            a#site_title.a-site-link(href="<%site%>") <%site_title%>
-        #site_sub_title.text-muted <%site_sub_title%>
-
-    .row
-        .col-2
-            hr
-        .col-10
-    br
-    br
+    .p-3
 
     #main.row
 
@@ -27,8 +16,7 @@ jade:include templete/head.jade
             hr
             #markdown
 
-    #foot.row.text-center.bg-light
-        .col.text-muted Copyright © <%copyright%>
+    jade:include templete/site_foot.jade
 
 script(src="/static/js/showdown.min.js")
 link(href="/static/css/solarized-light.css", rel="stylesheet")
@@ -60,7 +48,7 @@ script.
                     $("#markdown").html(html);
                     hljs.highlightAll();
 
-                    common.scroll_to_ele($("#main"));
+                    common.scroll_to_ele($("#ay"));
 
                     $("#markdown table").addClass("table").addClass("table-bordered");
                     $("#markdown table>thead").addClass("thead-light");

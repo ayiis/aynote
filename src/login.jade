@@ -1,18 +1,7 @@
 jade:include templete/head.jade
 
 #ay.container
-
-    #head
-        .h2
-            a#site_title.a-site-link(href="<%site%>") <%site_title%>
-        #site_sub_title.text-muted <%site_sub_title%>
-
-    .row
-        .col-2
-            hr
-        .col-10
-    br
-    br
+    .p-3
 
     #main.row
 
@@ -23,7 +12,7 @@ jade:include templete/head.jade
             #info.text-muted
                 span Welcome back
             hr
-            br
+            .p-3
             .row
                 .col-4
                 .col-4.text-muted
@@ -37,13 +26,12 @@ jade:include templete/head.jade
                         button#btn_signin.btn.btn-primary Sign in
         .col-1
 
-    #foot.row.text-center.bg-light
-        .col.text-muted Copyright © <%copyright%>
+    jade:include templete/site_foot.jade
 
 script.
 
     $(()=> {
-        common.scroll_to_ele($("#main"));
+        common.scroll_to_ele($("#ay"));
         $("#btn_signin").on("click", function() {
             let req_data = {
                 "username": $("#username").val(),

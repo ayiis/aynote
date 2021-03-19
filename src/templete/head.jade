@@ -10,16 +10,13 @@ html
         script(src="/static/js/bootstrap.min.js", type="application/javascript")
         script(src="/static/js/notify.min.js", type="application/javascript")
         script(src="/static/js/common.js", type="application/javascript")
-
-        //- 需要时配置
-        //- link(href="./static/css/select2.min.css", rel="stylesheet")
-        //- link(href="./static/css/select2-bootstrap4.min.css", rel="stylesheet")
-        //- script(src="/js/showdown.min.js")
-        //- link(href="/css/solarized-light.css", rel="stylesheet")
-        //- script(src="/js/highlight.pack.js")
-
-        title <=%head_title%>
+        title
 
     body
 
-        jade:break_jade break
+        #head.container
+            .h2
+                a#site_title.a-site-link(href="<%site%>") <%site_title%>
+            #site_sub_title.text-muted <%site_sub_title%>
+
+        jade:break_jade break_jade

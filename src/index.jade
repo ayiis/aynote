@@ -1,14 +1,7 @@
 jade:include templete/head.jade
 
 #ay.container
-
-    #head
-        .h2
-            a#site_title.a-site-link(href="<%site%>") <%site_title%>
-        #site_sub_title.text-muted <%site_sub_title%>
-
-    hr
-    br
+    .p-3
 
     #main.row
 
@@ -22,8 +15,8 @@ jade:include templete/head.jade
                 small Author:&nbsp;
                 small
                     a(href="/author/<%author%>") <%author%>
-            br
-            br
+            .p-3
+            .p-3
             .font-weight-bold Reading ranking
             #note_read_rank
                 a(href="", val="link")
@@ -41,12 +34,11 @@ jade:include templete/head.jade
                             span &nbsp;@&nbsp;
                             span(val="datetime")
 
-            br
+            .p-3
             #pager.row
 
 
-    #foot.row.text-center.bg-light
-        .col.text-muted Copyright © <%copyright%>
+    jade:include templete/site_foot.jade
 
 script(src="/static/js/pager.js")
 script.
@@ -95,6 +87,7 @@ script.
                             $("#note_list").append(alink);
                         }
                         list_pager.touch_pagination(res.rows, page_index);
+                        common.scroll_to_ele($("#ay"));
                     } else {
                         $.notify(res.desc, "error");
                     }

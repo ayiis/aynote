@@ -235,16 +235,6 @@ class TemplateHandler:
         4. 模板的所有修改，重启后才能生效
         5. 其实就没有用到生成的 src 的文件了，src 只能方便参考
     """
-    render_variables = r"<=%(.*?)%>"
-
-    @classmethod
-    def response_html(cls, content):
-        return Response(
-            body=content,
-            status=200,
-            content_type="text/html",
-            charset="utf8",
-        )
 
     @classmethod
     def wrap(cls, templete_path, templete, index="index", extra_args={}):
@@ -255,27 +245,32 @@ class TemplateHandler:
         @Authorize.wrap
         def do(req):
 
-            req_path = req.path
+            _, req_path, *paras = req.path.split("/")
 
-            if req_path == "/":
-                req_path = "/%s" % (index)
+            if not req_path:
+                req_path = index
 
             target_path = os.path.abspath("%s/%s.jade" % (cls.templete_path, req_path))
             if not(target_path in cls.templete and target_path.startswith(cls.templete_path) and os.path.isfile(target_path)):
                 raise AyHTTPError(status_code=404, reason="%s Not found" % req_path)
 
-            content = cls.templete[target_path]
-            render_content = re.sub(cls.render_variables, lambda g: extra_args.get(g.groups()[0]) or "", content)
-            return cls.response_html(render_content)
+            return Response(
+                body=cls.templete[target_path],
+                status=200,
+                content_type="text/html",
+                charset="utf8",
+            )
 
         return do
 
 
 class ContentHandler(TemplateHandler):
     """
+        🚫 搁置。
+
         1. 使用 build 好的 template
         2. 渲染 数据 返回
-            🚫 搁置。面向静态页面应当使用 服务端渲染 markdown，复杂性大幅提高
+            面向静态页面应当使用 服务端渲染 markdown，复杂性大幅提高
     """
     @classmethod
     def wrap(cls, templete_path, templete, templete_name, data_handler, extra_args={}):
