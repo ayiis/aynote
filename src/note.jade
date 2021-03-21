@@ -26,6 +26,7 @@ jade:include templete/head.jade
 script(src="/static/js/showdown.min.js")
 link(href="/static/css/solarized-light.css", rel="stylesheet")
 script(src="/static/js/highlight.pack.js")
+script(src="/static/js/highlightjs-line-numbers.min.js")
 script.
 
     $(()=> {
@@ -58,6 +59,9 @@ script.
                     let html = converter.makeHtml(res.data.content);
                     $("#markdown").html(html);
                     hljs.highlightAll();
+                    $("code.hljs").each((i, block) => {
+                        hljs.lineNumbersBlock(block);
+                    });
 
                     common.scroll_to_ele($("#ay"));
 

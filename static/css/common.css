@@ -81,3 +81,20 @@ input::placeholder {
     word-wrap: break-word;
     white-space: break-spaces;
 }
+
+/* for block of numbers */
+.hljs-ln-numbers {
+    user-select: none;
+    text-align: center;
+    color: #ccc;
+    border-right: 1px solid #CCC;
+    vertical-align: top;
+    padding-right: 5px !important;
+
+    /* your custom style here */
+}
+
+/* for block of code */
+.hljs-ln-code {
+    padding-left: 10px !important;
+}

@@ -83,6 +83,12 @@ script.
                 $("[val=link]").val(link);
             }
         });
+        $("body").on("keydown", (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key == "s") {
+                $("#btn_submit").click();
+                return false;
+            }
+        });
 
         $("#btn_submit").on("click", function() {
             let req_data = {

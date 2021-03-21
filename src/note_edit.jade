@@ -26,7 +26,7 @@ jade:include templete/head.jade
                     label.form-check-label(for="status2") 私密
             .form-group
                 button#btn_submit.btn.btn-success 发 布
-                button#btn_submit.btn.btn-info(link="/") 返 回
+                button#btn_view.btn.btn-info(link="") 查 看
 
         .col-9
             .form-row
@@ -81,6 +81,7 @@ script.
                     $("[val=tags]").val(res.data.tags);
                     $("[val=desc]").val(res.data.desc);
                     $("[val=content]").val(res.data.content);
+                    $("#btn_view").attr("link", res.data.link);
 
                     $.notify(res.desc, "success");
                 } else {
@@ -106,6 +107,12 @@ script.
                 let link = title.replace(/[^0-9a-z]+/gi, "-");
                 link = link.replace(/^\-+|\-+$/g, "");
                 $("[val=link]").val(link);
+            }
+        });
+        $("body").on("keydown", (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key == "s") {
+                $("#btn_submit").click();
+                return false;
             }
         });
 
