@@ -39,7 +39,7 @@ async def main():
         r"/api/user/register",    # 不开放注册
 
         r"/note_edit",
-        # r"/note_add",
+        r"/note_add",
     ])
 
     app.router.add_static("/static/", path="./static/", name="static")  # 静态资源 js css img (下载形式)

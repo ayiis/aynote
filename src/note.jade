@@ -15,6 +15,8 @@ jade:include templete/head.jade
                 span#datetime
                 span &nbsp;
                 a#edit(href="") Edit
+                span &nbsp;
+                a#print(href="") Print
             hr
             pre#desc.a-bbtext.bg-light
             #markdown
@@ -27,6 +29,10 @@ script(src="/static/js/highlight.pack.js")
 script.
 
     $(()=> {
+        $("#print").on("click", ()=>{
+            $("body").html($("#markdown").html());
+            print();
+        });
         let paras = window.location.pathname.split("/");
         const note_id = paras[2];
         let req_data = {
