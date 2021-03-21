@@ -14,6 +14,7 @@ from aiohttp.web import HTTPException, HTTPFound, Response, json_response
 from pathlib import Path
 import uuid
 import base64
+from urllib.parse import quote
 
 
 class AyHTTPError(HTTPException):
@@ -119,7 +120,11 @@ class Authorize:
                 except Exception as e:
 
                     print("Authorize fail:", e, type(e))
-                    exc = HTTPFound(location=cls._security_settings["login_url"])
+                    if req.method == "GET":
+                        location = "%s?from=%s" % (cls._security_settings["login_url"], quote(str(req.url)))
+                        exc = HTTPFound(location=location)
+                    else:
+                        exc = AyHTTPError(status_code=500, reason="authorize fail.")
 
                     if type(e) == SecureCookie.TimeoutException:
                         SecureCookie.del_cookie(exc, "access_code")
@@ -194,37 +199,41 @@ class ApiHandler:
         return json_response(res_data, status=status_code)
 
     @classmethod
-    # @Authorize.wrap
-    async def do(cls, req):
-        """
-            1. 确保请求是 json 格式
-            2. 执行路由对应的方法，获得结果
-            3. 返回 json 格式的结果
-        """
-        handler = await cls._prepare_request_handler(req)
-        req_json = await cls._prepare_request_json(req)
-        res_data = cls._res_json.copy()
+    def wrap(cls):
 
-        # 发送到对应的执行者执行
-        try:
-            data, rows = await handler(req_json)
-            res_data.update({
-                "data": data,
-                "rows": rows,
-            })
-        except Exception as e:
-            print(traceback.format_exc(), flush=True)
-            res_data.update({
-                "code": cls._error_code,
-                "desc": str(e),
-            })
+        @Authorize.wrap
+        async def do(req):
+            """
+                1. 确保请求是 json 格式
+                2. 执行路由对应的方法，获得结果
+                3. 返回 json 格式的结果
+            """
+            handler = await cls._prepare_request_handler(req)
+            req_json = await cls._prepare_request_json(req)
+            res_data = cls._res_json.copy()
 
-        # 返回 json 结果
-        # 必须 return 到外层
-        try:
-            return cls._send_response(res_data)
-        except Exception:
-            print(traceback.format_exc(), flush=True)
+            # 发送到对应的执行者执行
+            try:
+                data, rows = await handler(req_json)
+                res_data.update({
+                    "data": data,
+                    "rows": rows,
+                })
+            except Exception as e:
+                print(traceback.format_exc(), flush=True)
+                res_data.update({
+                    "code": cls._error_code,
+                    "desc": str(e),
+                })
+
+            # 返回 json 结果
+            # 必须 return 到外层
+            try:
+                return cls._send_response(res_data)
+            except Exception:
+                print(traceback.format_exc(), flush=True)
+
+        return do
 
 
 class TemplateHandler:

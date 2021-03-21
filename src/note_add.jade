@@ -17,7 +17,7 @@ jade:include templete/head.jade
                 .input-group-prepend
                     span.input-group-text.text-muted 标签
                 input.form-control(placeholder="多个标签用逗号隔开", val="tags")
-            .form-group
+            .form-group.d-none
                 .form-check.form-check-inline
                     input.form-check-input(type="radio", name="radio_status", checked, val="status")
                     label.form-check-label(for="status") 公开
@@ -25,23 +25,30 @@ jade:include templete/head.jade
                     input.form-check-input(type="radio", name="radio_status", val="status2")
                     label.form-check-label(for="status2") 私密
             .form-group
-                button#btn_submit.btn.btn-success 发布
+                button#btn_submit.btn.btn-success 发 布
+                button#btn_submit.btn.btn-info(link="/") 返 回
 
         .col-9
             .form-row
-                .form-group.col-12
-                    label.form-check-label(for="update_link") 自定义链接地址
-                    input.form-control(placeholder="标题（生成链接地址）", val="title")
+                .input-group.mb-3
+                    .input-group-prepend
+                        span.input-group-text.text-muted 标题
+                    input.form-control(placeholder="", val="title")
             .form-row
-                .form-group.col-3
-                    .form-check.form-check-inline
-                        input.form-check-input(type="checkbox", val="update_link")
-                        label.form-check-label(for="update_link") 自定义链接地址
-                .form-group.col-9
-                    input.form-control(placeholder="链接地址", disabled, val="link")
+                .input-group.mb-3
+                    .input-group-prepend
+                        label.input-group-text
+                            input(type="checkbox", val="update_link")
+                            span.text-muted &nbsp;自定义链接
+                    input.form-control(placeholder="由标题自动生成", disabled, val="link")
             .form-row
-                .form-group.col-12
-                    textarea.form-control(rows="30", placeholder="内容（使用 Markdown 格式）", val="content")
+                .input-group.mb-3
+                    .input-group-prepend
+                        span.input-group-text.text-muted 描述
+                    textarea.form-control(rows="2", placeholder="", style="resize:none", val="desc")
+            .form-row
+                .form-group.col-12.p-0
+                    textarea.form-control(rows="24", placeholder="内容（使用 Markdown）", val="content")
 
 
     jade:include templete/site_foot.jade
@@ -49,6 +56,7 @@ jade:include templete/head.jade
 script.
     $(()=> {
 
+        $("title").text("发布文章");
         $("[val=datetime]").val(common.get_datetime_string());
         common.scroll_to_ele($("#ay"));
 
@@ -83,6 +91,7 @@ script.
                 "datetime": $("[val=datetime]").val() || "",
                 "author": $("[val=author]").val() || "",
                 "tags": $("[val=tags]").val() || "",
+                "desc": $("[val=desc]").val() || "",
                 "content": $("[val=content]").val() || "",
                 "status": $("[val=status]").is(":checked") ? 1 : 0,
             };
@@ -92,7 +101,7 @@ script.
                 success: (res)=> {
                     console.log(res);
                     if(res.code == 0) {
-                        $.notify(res.desc, "success");
+                        $.notify("发布成功", "success");
                         setTimeout(()=> {
                             window.location.href = "/note/" + res.data + "/" + req_data["link"];
                         }, 1000);

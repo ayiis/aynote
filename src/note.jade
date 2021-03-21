@@ -10,10 +10,13 @@ jade:include templete/head.jade
             div
                 a#title.a-site-link(href="")
             #info.text-muted
-                a#author.a-site-link(href="#")
+                a#author.a-site-link(href="")
                 span &nbsp;@&nbsp;
                 span#datetime
+                span &nbsp;
+                a#edit(href="") Edit
             hr
+            pre#desc.a-bbtext.bg-light
             #markdown
 
     jade:include templete/site_foot.jade
@@ -43,6 +46,8 @@ script.
                     $("#datetime").text(res.data.datetime);
                     $("#author").attr("href", encodeURI("/author/" + res.data.author));
                     $("#author").text(res.data.author);
+                    $("#desc").text(res.data.desc);
+                    $("#edit").attr("href", ["/note_edit", res.data.note_id].join("/"));
 
                     let html = converter.makeHtml(res.data.content);
                     $("#markdown").html(html);

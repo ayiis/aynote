@@ -32,6 +32,7 @@ async def add(req_data):
         "datetime": req_data.get("datetime") or time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time())),
         "author": req_data.get("author") or "ayiis",
         "tags": req_data.get("tags") or "",
+        "desc": req_data.get("desc") or "",
         "content": req_data.get("content") or "",
         "status": req_data.get("status") or 0,
     }
@@ -51,6 +52,7 @@ async def edit(req_data):
         "datetime": req_data.get("datetime") or time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time())),
         "author": req_data.get("author") or "ayiis",
         "tags": req_data.get("tags") or "",
+        "desc": req_data.get("desc") or "",
         "content": req_data.get("content") or "",
         "status": req_data.get("status") or 0,
     }
@@ -76,7 +78,7 @@ async def read_rank(req_data):
 async def note_list(req_data):
 
     db_query = {"status": 1}
-    db_query_extra = {"_id": 0, "title": 1, "link": 1, "author": 1, "datetime": 1}
+    db_query_extra = {"_id": 0, "title": 1, "link": 1, "author": 1, "desc": 1, "datetime": 1}
     page_query = {
         "sort_by": req_data.get("sort_by", "_id"),
         "sort_asc": req_data.get("sort_asc", -1),

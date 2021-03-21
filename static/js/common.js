@@ -1,4 +1,4 @@
-(()=>{
+$(()=>{
     window.common = {
         api_post: (args) => {
             $.ajax({
@@ -14,6 +14,7 @@
                     if (args.error) {
                         args.error(err);
                     } else {
+                        $.notify("req error: " + err.responseText, "error");
                         console.log("Url fail (", args.url, "):", err.responseText);
                     }
                 }
@@ -37,9 +38,13 @@
 
             return [
                 now.getFullYear(),
-                (mm > 9 ? '' : '0') + mm,
-                (dd > 9 ? '' : '0') + dd,
-            ].join("-") + " " + now.toLocaleTimeString().substr(0, 8);
+                ("0" + (now.getMonth() + 1)).slice(-2),
+                ("0" + now.getDate()).slice(-2),
+            ].join("-") + " " + [
+                ("0" + now.getHours()).slice(-2),
+                ("0" + now.getMinutes()).slice(-2),
+                ("0" + now.getSeconds()).slice(-2)
+            ].join(":");
         },
         scroll_to_ele: (ele)=> {
             let scroll_top = ele.offset() ? ele.offset().top : 0;
@@ -47,9 +52,8 @@
         },
     }
 
-    $("body").on("click", "button[link]", function(){
-        // window.location($(this).attr("link"));
+    $(document.body).on("click", "button[link]", function() {
         window.location.href = $(this).attr("link");
     });
 
-})();
+});

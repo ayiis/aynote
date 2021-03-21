@@ -34,7 +34,7 @@ class JadeWork:
             读取 jade 文件并转化为 html 标签形式
         """
         with codecs.open(jade_file, "r", encoding="utf-8") as rf:
-            return process(rf.read(), compiler=Compiler, staticAttrs=True, extension=None)
+            return process(rf.read(), compiler=Compiler, staticAttrs=True, pretty=True, extension=None)
 
     @classmethod
     def _convert_dir_jade(cls, source_path, target_path):

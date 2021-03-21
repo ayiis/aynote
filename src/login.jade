@@ -46,8 +46,13 @@ script.
                     if(res.code == 0) {
                         $.notify("登陆成功，正在跳转..", "success");
                         setTimeout(function() {
-                            window.location = "/";
-                        }, 1000);
+                            let para = location.search.slice(1);
+                            let from = "/";
+                            if(para) {
+                                from = para.split("=").pop();
+                            }
+                            window.location = from;
+                        }, 500);
                     } else {
                         $.notify(res.desc, "error");
                     }

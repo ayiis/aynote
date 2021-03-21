@@ -50,7 +50,7 @@ body a {
     min-height: 800px;
 }
 #markdown {
-    padding: 2.5rem 0;
+    padding: 2rem 0;
 }
 #foot {
     padding: .4rem 0;
@@ -71,9 +71,13 @@ input::placeholder {
     padding-top: 10px;
 }
 
-#note_read_rank a {
+.a-1line-text {
     display: block;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+.a-bbtext {
+    word-wrap: break-word;
+    white-space: break-spaces;
 }

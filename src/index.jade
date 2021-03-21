@@ -19,15 +19,18 @@ jade:include templete/head.jade
             .p-3
             .font-weight-bold Reading ranking
             #note_read_rank
-                a(href="", val="link")
-                    small(val="title")
+                .a-1line-text
+                    a(href="", val="link")
+                        small(val="title")
 
         .col-9.a-pd-lr30
             #note_list
                 .col-12.a-pd-t10
-                    .h4
+                    .h4.mb-0
                         a(val="link", href="")
                             span(val="title")
+                    .text-muted.a-1line-text
+                        small(val="desc")
                     .text-right.text-muted
                         small
                             a(val="author", href="")
@@ -49,6 +52,7 @@ script.
             "ele": $("#pager"),
             "callback": next_page,
         });
+        list_pager.init_document_listener();
 
         let $note_read_rank = $($("#note_read_rank").html());
         common.api_post({
@@ -58,7 +62,7 @@ script.
                     $("#note_read_rank").empty();
                     for(let i = 0 ; i < res.data.length ; i++ ) {
                         let alink = $note_read_rank.clone();
-                        alink.attr("href", res.data[i]["link"]);
+                        alink.find("[val=link]").attr("href", res.data[i]["link"]);
                         alink.find("[val=title]").text(res.data[i]["title"]);
                         $("#note_read_rank").append(alink);
                     }
@@ -74,7 +78,6 @@ script.
                 url: "/api/note/note_list",
                 data: {"page_index": page_index},
                 success: (res)=> {
-                    //- console.log(res);
                     if(res.code == 0) {
                         $("#note_list").empty();
                         for(let i = 0 ; i < res.data.length ; i++ ) {
@@ -82,6 +85,7 @@ script.
                             alink.find("[val=link]").attr("href", res.data[i]["link"]);
                             alink.find("[val=title]").text(res.data[i]["title"]);
                             alink.find("[val=author]").text(res.data[i]["author"]);
+                            alink.find("[val=desc]").text(res.data[i]["desc"]);
                             alink.find("[val=author]").attr("href", encodeURI("/author/" + res.data[i]["author"]));
                             alink.find("[val=datetime]").text(res.data[i]["datetime"].split(" ")[0]);
                             $("#note_list").append(alink);
