@@ -1,9 +1,17 @@
 
 ## WHY THIS
 
-一个适用于有编程基础的技术人员的博客，心无旁骛，不受拘束。
+少则得，多则惑。我渐渐发现自己的博客只需要两个功能：
 
-示例网站: [https://ayiis.me](https://ayiis.me)
+1. 使用 markdown 写文章
+
+2. 代码清晰可读
+
+简单而轻巧，于是我给自己写了一个。
+
+一个适合有编程基础的技术人员使用的博客。
+
+我的博客地址: [https://ayiis.me](https://ayiis.me)
 
 ## 基础结构
 
@@ -23,10 +31,10 @@
 
 代码高亮使用 [highlight.js](https://github.com/highlightjs/highlight.js) + solarized-light
 
-#### 关于内容
+### 关于内容
 
-内容支持 markdown，代码自动高亮
+内容支持 markdown，代码自动高亮，高亮的代码类型可以在 [highlightjs](https://highlightjs.org/download/) 找到
 
-#### 关于评论
+### 关于评论
 
-✖️ 暂不支持评论
+✖️ 暂无计划
