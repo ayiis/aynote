@@ -8,17 +8,13 @@ jade:include templete/head.jade
         .col-3
             .font-weight-bold Announcement
             .text-muted
-                small Thanks for:&nbsp;
+                small Github:&nbsp;
                 small
-                    a(href="https://ayiis.me/") ayiis.me
+                    a(href="https://github.com/ayiis", target="_blank") ayiis
             .text-muted
-                small Author:&nbsp;
-                small
-                    a(href="/author/<%author%>") <%author%>
+                small Thanks for visiting
             .text-muted
                 small
-                    a(href="/login") Login
-                    &nbsp;|
                     a(href="/note_add") Add note
             .p-3
             .p-3
@@ -27,6 +23,11 @@ jade:include templete/head.jade
                 .a-1line-text
                     a(href="", val="link")
                         small(val="title")
+            .p-3
+            .p-3
+            .text-muted
+                small If you like this website, you can find the source code in&nbsp;
+                    a(href="https://github.com/ayiis/aynote", target="_blank") github
 
         .col-9.a-pd-lr30
             #note_list

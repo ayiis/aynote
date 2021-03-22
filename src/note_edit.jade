@@ -27,6 +27,7 @@ jade:include templete/head.jade
             .form-group
                 button#btn_submit.btn.btn-success 发 布
                 button#btn_view.btn.btn-info(link="") 查 看
+                button#btn_remove.btn.btn-danger 删 除
 
         .col-9
             .form-row
@@ -90,7 +91,7 @@ script.
             },
         });
 
-        $("#update_link").on("change", function() {
+        $("[val=update_link]").on("change", function() {
             let checked = $(this).is(":checked");
             if(checked) {
                 $("[val=link]").attr("disabled", null);
@@ -114,6 +115,26 @@ script.
                 $("#btn_submit").click();
                 return false;
             }
+        });
+
+        $("#btn_remove").on("click", function() {
+            let req_data = {
+                "note_id": GW.note_id,
+            }
+            common.api_post({
+                url: "/api/note/remove",
+                data: req_data,
+                success: (res)=> {
+                    if(res.code == 0) {
+                        $.notify("删除成功", "success");
+                        setTimeout(()=> {
+                            window.location.href = "/";
+                        }, 500);
+                    } else {
+                        $.notify("删除失败: " + res.desc, "error");
+                    }
+                },
+            });
         });
 
         $("#btn_submit").on("click", function() {
@@ -150,4 +171,5 @@ script.
             return false;
         });
 
+        $("[val=update_link]").prop("checked", true).change();
     });

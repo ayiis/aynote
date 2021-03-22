@@ -27,6 +27,7 @@ async def main():
         "/api/note/query": note.query,
         "/api/note/add": note.add,
         "/api/note/edit": note.edit,
+        "/api/note/remove": note.remove,
         "/api/note/read_rank": note.read_rank,
         "/api/note/note_list": note.note_list,
 
@@ -36,6 +37,7 @@ async def main():
     Authorize.init(config.security_settings, [
         r"/api/note/add",
         r"/api/note/edit",
+        r"/api/note/remove",
         r"/api/user/register",    # 不开放注册
 
         r"/note_edit",
@@ -48,7 +50,7 @@ async def main():
     app.router.add_route("GET", "/{match:.*}", TemplateHandler.wrap("src", templete, index="index"))    # html 静态页面
 
     await asyncio.gather(
-        aiohttp.web._run_app(app, port=7002),       # 启动web服务，监听端口
+        aiohttp.web._run_app(app, port=config.system_settings["listening_port"]),       # 启动web服务，监听端口
     )
 
 

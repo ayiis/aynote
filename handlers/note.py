@@ -15,6 +15,8 @@ async def query(req_data):
         "note_id": int(req_data["note_id"]),
     }, {"_id": 0})
 
+    assert res, "note not found"
+
     return res, 1
 
 
@@ -65,6 +67,17 @@ async def edit(req_data):
     return note_id, 1
 
 
+async def remove(req_data):
+    print("req_data: %s" % (req_data))
+
+    note_id = int(req_data["note_id"])
+
+    await collection.delete_one({
+        "note_id": note_id
+    })
+    return note_id, 1
+
+
 async def read_rank(req_data):
 
     note_list = await collection.find(
@@ -80,7 +93,7 @@ async def note_list(req_data):
     db_query = {"status": 1}
     db_query_extra = {"_id": 0, "title": 1, "link": 1, "author": 1, "desc": 1, "datetime": 1}
     page_query = {
-        "sort_by": req_data.get("sort_by", "_id"),
+        "sort_by": req_data.get("sort_by", "datetime"),
         "sort_asc": req_data.get("sort_asc", -1),
         "page_index": req_data.get("page_index", 1) - 1,
         "page_size": req_data.get("page_size", 10),

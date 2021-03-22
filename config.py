@@ -4,14 +4,14 @@ mongodb_settings = {
     "db_test": {
         "HOST": "127.0.0.1",
         "PORT": 27017,
-        "DATABASE_NAME": "test",
+        "DATABASE_NAME": "aynote",
         "USERNAME": "",
         "PASSWORD": "",
     }
 }
 
 system_settings = {
-    "listening_port": 8888,
+    "listening_port": 7002,
 }
 
 security_settings = {
@@ -29,10 +29,11 @@ security_settings = {
 
 site_variables = {
     "ts": int(time.time()),
+    # "site": "http://127.0.0.1:7002/",
     # "site": "https://wodove.com/",
-    "site": "http://127.0.0.1:7002/",
+    "site": "https://ayiis.me/",
     "site_title": "Things go wrong",
-    "site_sub_title": "yet another one try to make them right",
+    "site_sub_title": "be one to make them right",
     "author": "ayiis",
     "copyright": "ayiis",
 }
