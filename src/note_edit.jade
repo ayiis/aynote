@@ -160,9 +160,6 @@ script.
                     console.log(res);
                     if(res.code == 0) {
                         $.notify("更新成功", "success");
-                        setTimeout(()=> {
-                            window.location.reload();
-                        }, 500);
                     } else {
                         $.notify("更新失败: " + res.desc, "error");
                     }

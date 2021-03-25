@@ -54,6 +54,9 @@ script.
 
     $(()=> {
 
+        let paras = window.location.pathname.split("/");
+        const page_no = Number(paras[2]);
+
         var list_pager = pager.init_pagination({
             "ele": $("#pager"),
             "callback": next_page,
@@ -104,5 +107,5 @@ script.
                 },
             });
         }
-        next_page(1);
+        next_page(page_no);
     });
