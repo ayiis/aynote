@@ -72,8 +72,12 @@ async def remove(req_data):
 
     note_id = int(req_data["note_id"])
 
-    await collection.delete_one({
+    await collection.update_one({
         "note_id": note_id
+    }, {
+        "$set": {
+            "status": 0,
+        }
     })
     return note_id, 1
 

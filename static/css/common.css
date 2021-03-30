@@ -82,6 +82,13 @@ input::placeholder {
     white-space: break-spaces;
 }
 
+
+/*
+
+                Markdown Style
+
+*/
+
 /* for block of numbers */
 .hljs-ln-numbers {
     user-select: none;
@@ -97,4 +104,17 @@ input::placeholder {
 /* for block of code */
 .hljs-ln-code {
     padding-left: 10px !important;
+}
+
+code {
+    background-color: #1b1f230d;
+    border-radius: .1rem;
+    padding: .2em .4em;
+    margin: 0;
+}
+
+blockquote {
+    padding: 0 1em;
+    color: #6a737d;
+    border-left: .25em solid #dfe2e5;
 }
